@@ -2,6 +2,7 @@
 
 from langgraph.graph import StateGraph, END
 from src.state.rag_state import RAGState
+from src.nodes.nodes import RAGNodes
 
 class GraphBuilder:
     """Builds and manages the LangGraph workflow"""
@@ -14,7 +15,7 @@ class GraphBuilder:
             retriever (_type_): Document retriever instance
             llm (_type_): Langauge model instance
         """
-        self.nodes = None
+        self.nodes = RAGNodes
         self.graph = None
         
     def build(self):
@@ -39,5 +40,24 @@ class GraphBuilder:
         builder.add_edge("responder", END)
         
         # Compile grpah
-        self.graph = builder.caompile()
-        return self.graph        
+        self.graph = builder.compile()
+        return self.graph   
+    
+    def run(self, question: str) -> dict:
+        """
+        Run the RAG workflow
+        
+        Args: 
+            question: User question
+            
+        Returns:
+            Final state with answer
+        """
+        if self.graph is None:
+            self.build()
+            
+        initial_state = RAGState(question=question)
+        return self.graph.invoke(initial_state)
+        
+        
+             
