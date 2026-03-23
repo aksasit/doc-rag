@@ -2,7 +2,7 @@
 
 from langgraph.graph import StateGraph, END
 from src.state.rag_state import RAGState
-from src.nodes.nodes import RAGNodes
+from src.nodes.reactnode import RAGNodes
 
 class GraphBuilder:
     """Builds and manages the LangGraph workflow"""
@@ -15,7 +15,7 @@ class GraphBuilder:
             retriever (_type_): Document retriever instance
             llm (_type_): Langauge model instance
         """
-        self.nodes = RAGNodes
+        self.nodes = RAGNodes(retriever, llm)
         self.graph = None
         
     def build(self):
@@ -30,7 +30,7 @@ class GraphBuilder:
         
         # Add nodes
         builder.add_node("retriever", self.nodes.retrieve_docs)
-        builder.add_node("responder". self.nodes.generate_answer)
+        builder.add_node("responder", self.nodes.generate_answer)
         
         # Set entry point
         builder.set_entry_point("retriever")

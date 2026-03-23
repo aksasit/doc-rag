@@ -1,16 +1,16 @@
 """LangGraph nodes for RAG workflow + ReAct Agent inside generate_content"""
-
 from typing import List, Optional
 from src.state.rag_state import RAGState
 
 from langchain_core.documents import Document
-from langchain_core.tools import Tool
+from langchain_core.tools import tool
 from langchain_core.messages import HumanMessage
 from langgraph.prebuilt import create_react_agent
 
 # Wikipedia tool
 from langchain_community.utilities import WikipediaAPIWrapper
 from langchain_community.tools.wikipedia.tool import WikipediaQueryRun
+
 
 class RAGNodes:
     def __init__(self, retriever, llm):
@@ -27,10 +27,12 @@ class RAGNodes:
         )
         
     # Build tools    
-    def _build_tools(self) -> List[Tool]:
+    def _build_tools(self) -> List:
         """Build retriever + wikipedia tools"""
         
-        def retriever_tool_fn(query: str) -> str:
+        @tool
+        def retriever_tool(query: str) -> str:
+            """Fetch relevant passages from the indexed vectorstore."""
             docs: List[Document] = self.retriever.invoke(query)
             
             if not docs:
@@ -44,24 +46,12 @@ class RAGNodes:
             
             return "\n\n".join(merged)
         
-        retriever_tool = Tool(
-            name="retriever",
-            description="Fetch passages from indexed vectorstore",
-            func=retriever_tool_fn
-        )
         
-        wiki = WikipediaQueryRun(
+        wikipedia_tool = WikipediaQueryRun(
             api_wrapper=WikipediaAPIWrapper(top_k_results=3, lang="en")
-        )
-        
-        wikipedia_tool = Tool(
-            name="wikipedia",
-            description="Search Wikipedia for general knowledge.",
-            func=wiki.run
-        )
-        
-        return [retriever_tool, wikipedia_tool]
-        
+        )        
+                
+        return [retriever_tool, wikipedia_tool]        
         
     # Build Agent
     def _build_agent(self):

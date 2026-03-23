@@ -12,7 +12,7 @@ class Config:
     
     os.environ['USER_AGENT'] = 'MyCustomAgent/1.0'
     # API keys
-    OPEN_API_KEY = os.getenv("OPEN_API_KEY")
+    OPEN_API_KEY = os.getenv("OPENAI_API_KEY")
     
     # Model configuration
     LLM_MODEL = "openai:gpt-4o"

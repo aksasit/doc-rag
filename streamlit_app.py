@@ -57,17 +57,18 @@ def initialize_rag():
         urls = Config.DEFAULT_URLS
         
         # Process documents
-        documents = doc_processor.process_urls(urls)
+        documents = doc_processor.process_url(urls)
         
         # Create vector store
-        vector_store.create_vectorstore(documents)
+        vector_store.create_retriever(documents)
         
         # Build graph
         graph_builder = GraphBuilder(
             retriever=vector_store.get_retriever(),
             llm=llm
         )
-        graph_builder.build()
+        
+        graph_builder.build()        
         
         return graph_builder, len(documents)
     except Exception as e:

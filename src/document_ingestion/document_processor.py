@@ -34,21 +34,21 @@ class DocumentProcessor:
     def load_from_url(self, url: str) -> List[Document]:
         """Load documents fomr urls"""
         
-        loader = WebBaseLoader(url)
+        loader = WebBaseLoader(url)      
         return loader.load()
     
     def load_from_pdf_dir(self, directory: Union[str, Path]) -> List[Document]:
         """Load documents from all PDFs inside a Directory"""
-        loader = PyPDFDirectoryLoader(str(directory))
+        loader = PyPDFDirectoryLoader(str(directory))        
         return loader.load()
     
-    # def load_from_pdf(self, file_path: Union[str, Path]) -> List[Document]:
-    #     """Load document(s) from a PDF File"""
-    #     loader = PyPDFLoader(str(file_path))
-    #     return loader.load()
+    def load_from_pdf(self, file_path: Union[str, Path]) -> List[Document]:
+        """Load document(s) from a PDF File"""
+        loader = PyPDFLoader(str(file_path))
+        return loader.load()
     
     def load_from_txt(self, file_path: Union[str, Path]) -> List[Document]:
-        """Load document(s) form a .txt file"""
+        """Load document(s) form a .txt file"""        
         loader = TextLoader(str(file_path), encoding="utf-8")
         return loader.load()
     
@@ -66,6 +66,7 @@ class DocumentProcessor:
         for src in sources:
             if src.startswith("http://") or src.startswith("https://"):
                 docs.extend(self.load_from_url(src))
+                
             
             path = Path("data")
             
@@ -78,6 +79,8 @@ class DocumentProcessor:
                     f"Unsupported source type: {src}."
                     "Use URL, .txt file, or PDF directory."
                 )
+            
+            return docs
                 
     def split_documents(self, documents: List[Document]) -> List[Document]:
         """
