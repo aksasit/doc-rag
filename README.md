@@ -37,89 +37,68 @@ Supports ingestion from multiple data sources:
 
 ### ⚡ FAISS Vector Store
 
-* Local vector storage using FAISS
-* Fast similarity search (ANN)
-* Persistent storage support (if saved)
+- Local vector storage using FAISS  
+- Fast similarity search (ANN)  
+- Optional persistence support  
 
 ---
 
-### 🤖 ReAct Agent (Reason + Act)
+### 🤖 ReAct Agent
 
-* Dynamically decides which tool to use
-* Combines retrieval + reasoning
-* Handles multi-step queries intelligently
+- Dynamically selects tools  
+- Combines reasoning + retrieval  
+- Handles multi-step queries  
 
 ---
 
 ### 🧩 Modular Architecture
 
-Clean separation of concerns:
-
-* Document ingestion
-* Vector store management
-* Graph-based workflow
-* Agent orchestration
+- Document ingestion  
+- Vector store management  
+- Graph-based workflow  
+- Agent orchestration  
 
 ---
 
-### 💬 Chat UI with History
+### 💬 Chat UI
 
-* Built using Streamlit
-* Displays previous responses
-* Interactive chat experience
+- Built with Streamlit  
+- Maintains chat history  
+- Interactive Q&A  
 
 ---
 
 ## 🏗️ Project Structure
 
-```
 DOCUMENT_RAG/
 │
-├── data/                     # Input documents (PDF, txt, etc.)
+├── data/
 │
 ├── src/
-│   ├── config/              # Configuration files
-│   ├── document_ingestion/  # Document loading & chunking
-│   ├── graph_builder/       # LangGraph workflow construction
-│   ├── nodes/               # Agent & tool nodes
-│   ├── state/               # RAG state management
-│   ├── vectorstore/         # FAISS handling logic
+│   ├── config/
+│   ├── document_ingestion/
+│   ├── graph_builder/
+│   ├── nodes/
+│   ├── state/
+│   ├── vectorstore/
 │
-├── streamlit_app.py         # UI application
-├── main.py                  # Entry point
-├── requirements.txt         # Dependencies
-├── .env                     # API keys (not committed)
-└── README.md                # Project documentation
-```
+├── streamlit_app.py
+├── main.py
+├── requirements.txt
+├── Dockerfile
+├── .dockerignore
+├── .env
+└── README.md
 
 ---
 
 ## 🔄 How It Works
 
-### 1️⃣ Document Ingestion
-
-* Documents are loaded and split into chunks
-
-### 2️⃣ Embedding Generation
-
-* Each chunk is converted into vector embeddings using OpenAI
-
-### 3️⃣ Vector Storage
-
-* Embeddings are stored in FAISS (locally)
-
-### 4️⃣ Query Processing
-
-* User query → converted to embedding
-* FAISS retrieves relevant chunks
-
-### 5️⃣ ReAct Agent Execution
-
-* Agent decides:
-
-  * Retrieve from vector store
-  * Call tools (Wikipedia, URL, etc.)
-* Generates final response
+1. Document ingestion → chunking  
+2. Embedding generation using OpenAI  
+3. Store embeddings in FAISS  
+4. Query → embedding → retrieval  
+5. ReAct agent → reasoning + response  
 
 ---
 
@@ -136,71 +115,89 @@ git clone <your-repo-url>
 cd travel-recommendation-system
 ```
 
+### 2️⃣ Create Virtual Environment
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Mac/Linux
+.venv\Scripts\activate      # Windows
+```
+
+### 3️⃣ Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
----
-
-## 🔐 Environment Variables
-
-Create a `.env` file:
-
-```env
-OPENAI_API_KEY=your_api_key_here
-```
-
----
-
-## ▶️ Running the Application
-
-### Run backend / main logic:
-
-```bash
-python main.py
-```
-
-### Run UI:
+### 4️⃣ Run the Application
 
 ```bash
 streamlit run streamlit_app.py
 ```
 
----
+### 5️⃣ Open in Browser
 
-## 💡 Usage
-
-1. Upload or provide data sources (PDF, URL, etc.)
-2. Ask questions in the UI
-3. System retrieves relevant context
-4. Agent reasons and responds
-5. Chat history is maintained in UI
+```
+http://localhost:8000
+```
 
 ---
 
-## ⚠️ Important Notes
+## 🐳 Docker Setup
 
-* FAISS is stored **locally in memory** unless explicitly persisted
-* Embeddings are generated using OpenAI API (cost involved)
-* On restart, embeddings must be reloaded or recreated if not saved
+### 1️⃣ Build Docker Image
+
+```bash
+docker build -t doc-rag .
+```
+
+### 2️⃣ Run Container
+
+```bash
+docker run -d \
+  -p 8501:8501 \
+  --env-file .env \
+  doc-rag
+```
+
+### 3️⃣ Access Application
+
+```
+http://localhost:8501
+```
 
 ---
 
-## 🔮 Future Improvements
 
-* Persistent FAISS storage with versioning
-* Hybrid search (keyword + vector)
-* Reranking for better retrieval accuracy
-* Deployment using FastAPI + Docker
-* Integration with production vector databases
+## 🚀 Future Enhancements
+
+* Persistent FAISS storage
+* Hybrid search (BM25 + vector)
+* Reranking models
+* Production deployment (Kubernetes)
+* GPU acceleration
 
 ---
 
 ## 🤝 Contributing
 
-Feel free to fork and improve the project. Contributions are welcome!
+Contributions are welcome!
+Feel free to fork this repo and submit a pull request.
 
 ---
 
 ## 📜 License
 
-This project is for learning and experimentation purposes.
+This project is licensed under the MIT License.
+
+---
+
+## 👨‍💻 Author
+
+**Asit Kumar Sahoo**
+
+---
+
+## ⭐ If you like this project
+
+Give it a ⭐ on GitHub and share it 🚀
