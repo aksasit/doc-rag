@@ -1,4 +1,4 @@
-# 📄 Document RAG System with FAISS + ReAct Agent
+# 📄 Document RAG System with FAISS + ReAct Agent (Dockerized)
 
 ## 🚀 Overview
 
@@ -123,11 +123,18 @@ DOCUMENT_RAG/
 
 ---
 
-## 🛠️ Installation
+
+
+---
+
+## ⚙️ Installation & Setup (Local)
+
+### 1️⃣ Clone the Repository
 
 ```bash
 git clone <your-repo-url>
-cd DOCUMENT_RAG
+cd travel-recommendation-system
+```
 
 pip install -r requirements.txt
 ```
